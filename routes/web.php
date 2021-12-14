@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
@@ -73,3 +75,9 @@ Route::get('/about', function () {
     ];
     return view('posts.about', $data);
 });
+
+//route login
+Route::get('/login', [LoginController::class, 'index']);
+//route register
+Route::get('/register', [RegisterController::class, 'index']);
+Route::post('/register', [RegisterController::class, 'simpanRegister']);
