@@ -8,10 +8,10 @@
             </div>
         </div>
         <div class="row">
-            @foreach ($user as $item)
+            @foreach ($categories as $item)
             <div class="col-lg-4 justify-content-lg-center">
                 <div class="card text-center">
-                    <a href="{{ url('category/'. $item->slug) }}" class="text-decoration-none">
+                    <a href="{{ url('/post?category='. $item->slug) }}" class="text-decoration-none">
                     <img src="https://source.unsplash.com/1200x400/?{{ $item->name}}" class="card-img-top" alt="{{  $item->name }}">
                     <div class="card-body">
                         <h2>{{ $item->name }}</h2>

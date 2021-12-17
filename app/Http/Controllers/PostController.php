@@ -140,7 +140,7 @@ class PostController extends Controller
            // 'user' => User::with('post')->latest()->get()
            'title' => 'Category',
            'sortBy' => 'Category',
-            'user' => Category::all()
+            'categories' => Category::all()
         ]);
     }
 

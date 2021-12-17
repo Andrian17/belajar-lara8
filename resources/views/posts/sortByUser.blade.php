@@ -8,7 +8,7 @@
                 @foreach ($user as $item)
                     <ul>
                         <li class="li">
-                          <a href="{{ url('user/'. $item->name) }}">{{ $item->name }}</a>     
+                          <a href="{{ url('/post?user='. $item->name) }}">{{ $item->name }}</a>     
                         </li>
                     </ul>
                 @endforeach

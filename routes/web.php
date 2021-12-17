@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -46,10 +47,10 @@ Route::get('/post/{post:slug}', [PostController::class, 'show']);
 // });
 
 
-Route::get('/category', [PostController::class, 'category']);
-Route::get('/category/{category:slug}', [PostController::class, 'postByCategory']);
-Route::get('/user', [PostController::class, 'user']);
-Route::get('/user/{user:name}', [PostController::class, 'postByUser']);
+Route::get('/category', [PostController::class, 'category'])->middleware('auth');
+//Route::get('/category/{category:slug}', [PostController::class, 'postByCategory'])->middleware('auth');
+Route::get('/user', [PostController::class, 'user'])->middleware('auth');
+//Route::get('/user/{user:name}', [PostController::class, 'postByUser'])->middleware('auth');
 
 
 Route::get('/faker', function ()
@@ -77,7 +78,14 @@ Route::get('/about', function () {
 });
 
 //route login
-Route::get('/login', [LoginController::class, 'index']);
+//kalau belum login panggil middleware 'guest' || function index hanya bisa diakses ketikan user belum melakukan login, kalau sudah login g bisa
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'authtenticate']);
 //route register
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'simpanRegister']);
+
+Route::get('/dashboard', [dashboardController::class, 'index'])->middleware('auth');
+
+//Logout
+Route::post('/logout', [LoginController::class, 'logout']);
