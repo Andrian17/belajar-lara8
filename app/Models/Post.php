@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use PhpParser\Node\Expr\Isset_;
+use Cviebrock\EloquentSluggable\Sluggable;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+
 
 class Post extends Model
 {
     use HasFactory;
+    use Sluggable;
+
     protected $guarded = ['id'];
     protected $with = ['category', 'user'];
    // protected $fillable = ['slug', 'judul', 'click_bait', 'content'];
@@ -56,5 +61,23 @@ class Post extends Model
         });
 
     }
+
+    //entuk menampilkan satu data berdasarkan slug ==> Route dashboard
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    //sluggable
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'judul'
+            ]
+        ];
+    }
+
+
 
 }

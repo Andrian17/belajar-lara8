@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\DashboardPostController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -85,7 +86,17 @@ Route::post('/login', [LoginController::class, 'authtenticate']);
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'simpanRegister']);
 
-Route::get('/dashboard', [dashboardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard', function(){
+    return view('dashboard.index', [
+        'title' => 'Dashboard',
+        'halo' => 'Halo Andrian'
+    ]);
+})->middleware('auth');
 
 //Logout
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
+//Route::post('/dashboard/logout', [DashboardPostController::class, 'logout']);
+
+//DashboardPost
+Route::get('/dashboard/post/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
+Route::resource('/dashboard/post', DashboardPostController::class)->middleware('auth');
