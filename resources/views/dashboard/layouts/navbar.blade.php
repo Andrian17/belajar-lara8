@@ -9,7 +9,7 @@
     </div>
     <div class="dropdown ms-1">
       <a class="btn btn-sm dropdown-toggle border-info text-light" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-        Admin
+        {{ auth()->user()->username }}
       </a>
     
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">

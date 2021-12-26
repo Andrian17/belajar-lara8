@@ -7,7 +7,7 @@
     </h1>
 </div>
     <div class="col-lg-8 my-4">
-        <form method="POST" action="/dashboard/post" >
+        <form method="POST" action="/dashboard/post" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="judul" class="form-label">Judul Post</label>
@@ -46,14 +46,25 @@
                 </select>
             </div>
             <div class="mb-3">
+                <label for="formFile" class="form-label">Gambar</label>
+                <img src="" alt="" class="img-preview img-fluid mb-3 col-sm-7">
+                <input class="form-control @error('gambar') is-invalid @enderror" type="file" id="formFile" name="gambar" onchange="previewImage()">
+                    @error('gambar')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+              </div>
+            <div class="mb-3">
                 <label for="body" class="form-label">Body</label>
-                <input id="content" type="hidden" name="content" value="{{ old('content') }}">
-                <trix-editor input="content"></trix-editor>
+                <input id="content" type="hidden" name="content" value="{{ old('content') }}" class="@error('content') is-invalid @enderror">
                 @error('content')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
+                <trix-editor input="content"></trix-editor>
+                
             </div>
             
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -75,6 +86,21 @@
             e.preventDefault();
         });
 
+        function previewImage() {
+            const file = document.querySelector('#formFile');
+            const imgPrev = document.querySelector('.img-preview');
+            imgPrev.style.display = 'block';
+            
+            const oFREader = new FileReader();
+            oFREader.readAsDataURL(file.files[0]);
+            oFREader.onload = function(e) {
+                imgPrev.src = e.target.result;
+            }
+        }
+
+        
+
     </script>
 
 @endsection
+

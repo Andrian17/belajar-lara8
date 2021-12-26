@@ -27,7 +27,14 @@
         <div class="col-lg-12">
         <h2 class="mt-3 text-center border">{{ $jenisPost }}</h2>
             <div class="card mb-3 text-center">
+                @if ($post[0]->gambar)
+                    <div class="border border-danger" style="max-height:350px; overflow:hidden">
+                        <img src="{{ asset('storage/' . $post[0]->gambar) }}" class="card-img-top" alt="...">
+                    </div>
+                @else
                     <img src="https://source.unsplash.com/1200x400/?{{ $post[0]->category->nama }}" class="card-img-top" alt="...">
+                @endif
+                    
                     <div class="card-body">
                         <a href="{{ url('post/'. $post[0]->slug) }}" class="text-decoration-none">
                             <h5 class="card-title">{{ $post[0]->judul }}</h5>

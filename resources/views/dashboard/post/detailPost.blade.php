@@ -9,7 +9,13 @@
             <div class="col-lg-10 mb-4 mt-4">
                 <article>
                     <h3 class="text-center text-uppercase">{{ $post->judul }}</h3>
-                    <img src="https://source.unsplash.com/1200x400/?{{ $post->category->nama }}" class="card-img-top" alt="...">
+                    @if ($post->gambar)
+                        <div class="" style="max-height: 350px; overflow: hidden">
+                            <img src="{{ asset('storage/' . $post->gambar) }}" class="card-img-top" alt="...">
+                        </div>
+                    @else
+                        <img src="https://source.unsplash.com/1200x400/?{{ $post->category->nama }}" class="card-img-top" alt="...">
+                    @endif
                     <div class="my-3">
                         <a href="/dashboard/post" class="btn btn-success"><span data-feather="arrow-left"></span> kembali lihat posts</a>
                         <a class="btn btn-warning" href="#"><span data-feather="edit-3"></span> ubah post</a>

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use App\Models\Category;
+use Illuminate\Session\Store;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class DashboardPostController extends Controller
@@ -45,15 +47,27 @@ class DashboardPostController extends Controller
      */
     public function store(Request $request)
     {
+
+        //return $request->file('gambar')->store('folder-gambar');
+        //return $request->content;
+
         $validate = $request->validate([
             'judul' => 'required|max:255',
             'slug' => 'required|unique:posts',
             'category_id' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'gambar' => 'image|file|max:2048'
+
         ]);
 
         $validate['click_bait'] = Str::limit(strip_tags($request->content), 30);
         $validate['user_id'] = auth()->user()->id;
+       // $validateData = $request->validate($validate);
+
+        //jika gambar diupload
+        if ($request->file('gambar')) {
+            $validate['gambar'] = $request->file('gambar')->store('folder-gambar');
+        }
 
         Post::create($validate);
 
@@ -108,11 +122,22 @@ class DashboardPostController extends Controller
             'judul' => 'required|max:255',
             'slug' => $rl,
             'category_id' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'gambar' => 'image|file|max:2048'
         ]);
 
         $validate['click_bait'] = Str::limit(strip_tags($request->content), 30);
         $validate['user_id'] = auth()->user()->id;
+
+        //jika gambar diupload
+        if ($request->file('gambar')) {
+
+            //menghapus gambar lama
+            if ($post->gambar) {
+                Storage::delete($post->gambar);
+            }
+            $validate['gambar'] = $request->file('gambar')->store('folder-gambar');
+        }
 
         Post::where('id', $post->id)->update($validate);
 
@@ -128,6 +153,7 @@ class DashboardPostController extends Controller
     public function destroy(Post $post)
     {
         Post::destroy($post->id);
+        Storage::delete($post->gambar);
         return redirect('/dashboard/post')->with('pesan', '<div class="alert alert-success mx-2" role="alert"> Postingan telah dihapus 
         </div>');
     }

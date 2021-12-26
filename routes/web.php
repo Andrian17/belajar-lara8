@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\DashboardPostController;
 use App\Http\Controllers\PostController;
@@ -98,5 +99,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
 //Route::post('/dashboard/logout', [DashboardPostController::class, 'logout']);
 
 //DashboardPost
+// post sbg model baindidng
 Route::get('/dashboard/post/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
 Route::resource('/dashboard/post', DashboardPostController::class)->middleware('auth');
+Route::get('/dashboard/category/checkSlug', [CategoryController::class, 'checkSlug'])->middleware('auth');
+//category sebagai route model baindidng
+
+//menggunakan middleware
+Route::resource('/dashboard/category', CategoryController::class)->middleware('admin')->except('show');
+
+//menggunakan gate pada AppServiceProvider  dan  kernel
+//Route::resource('/dashboard/category', CategoryController::class)->except('show');
